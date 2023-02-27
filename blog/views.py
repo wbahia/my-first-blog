@@ -1,5 +1,15 @@
 from django.shortcuts import render
+from django.utils import timezone
+from .models import Post
+import logging
 
-# Create your views here.
+
+
+
 def post_list(request):
-    return render(request, 'blog/post_list.html', {})
+    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date') 
+    # logger = logging.getLogger('django')
+    #logger.info('here goes your message')
+    #posts = Post.objects.all()
+    # logger.info(posts[0].author)
+    return render(request, 'blog/post_list.html', {'posts': posts, 'time': timezone.now()})
